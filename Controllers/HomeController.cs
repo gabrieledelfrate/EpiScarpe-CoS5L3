@@ -1,12 +1,15 @@
 using EpiScarpe_Co.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 namespace EpiScarpe_Co.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly string _connectionString = "Server=GABRIELE-PORTAT\\SQLEXPRESS; Initial Catalog=EpiScarpe; Integrated Security=true; TrustServerCertificate=True";
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -15,8 +18,50 @@ namespace EpiScarpe_Co.Controllers
 
         public ActionResult Index()
         {
-            var displayedProducts = ProductRepository.GetAllProducts().Where(p => p.IsDisplayedOnHomePage).ToList();
+            var displayedProducts = GetDisplayedProductsFromDatabase();
             return View(displayedProducts);
+        }
+
+       // public ActionResult Details(int id)
+        //{
+            //var product = GetProductDetailsFromDatabase(id);
+            //return View(product);
+        //}
+
+        private List<Product> GetDisplayedProductsFromDatabase()
+        {
+            List<Product> products = new List<Product>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM Shoes WHERE IsDisplayedOnHomePage = 1";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Product product = new Product
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString(),
+                                Price = Convert.ToDecimal(reader["Price"]),
+                                Description = reader["Description"].ToString(),
+                                CoverImage = reader["CoverImage"].ToString(),
+                                AdditionalImage1 = reader["AdditionalImage1"].ToString(),
+                                AdditionalImage2 = reader["AdditionalImage2"].ToString(),
+                                IsDisplayedOnHomePage = Convert.ToBoolean(reader["IsDisplayedOnHomePage"])
+                            };
+
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+
+            return products;
         }
 
         public ActionResult Details(int id)
