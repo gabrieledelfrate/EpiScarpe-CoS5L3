@@ -22,11 +22,11 @@ namespace EpiScarpe_Co.Controllers
             return View(displayedProducts);
         }
 
-       // public ActionResult Details(int id)
-        //{
-            //var product = GetProductDetailsFromDatabase(id);
-            //return View(product);
-        //}
+       public ActionResult Details(int id)
+        {
+            var product = GetProductDetailsFromDatabase(id);
+            return View(product);
+        }
 
         private List<Product> GetDisplayedProductsFromDatabase()
         {
@@ -64,11 +64,42 @@ namespace EpiScarpe_Co.Controllers
             return products;
         }
 
-        public ActionResult Details(int id)
+        private Product GetProductDetailsFromDatabase(int id)
         {
-            var product = ProductRepository.GetAllProducts().FirstOrDefault(p => p.Id == id);
-            return View(product);
+            Product product = null;
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM Shoes WHERE Id = @ProductId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ProductId", id);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            product = new Product
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString(),
+                                Price = Convert.ToDecimal(reader["Price"]),
+                                Description = reader["Description"].ToString(),
+                                CoverImage = reader["CoverImage"].ToString(),
+                                AdditionalImage1 = reader["AdditionalImage1"].ToString(),
+                                AdditionalImage2 = reader["AdditionalImage2"].ToString(),
+                                IsDisplayedOnHomePage = Convert.ToBoolean(reader["IsDisplayedOnHomePage"])
+                            };
+                        }
+                    }
+                }
+            }
+
+            return product;
         }
+
 
         public IActionResult Privacy()
         {

@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Registrazione";
+    Layout = null; 
+}
+
+<h2>Registrazione</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <div>
+        <label for="Nome">Nome:</label>
+        <input type="text" name="Nome" required>
+    </div>
+    <div>
+        <label for="Cognome">Cognome:</label>
+        <input type="text" name="Cognome" required>
+    </div>
+    <div>
+        <label for="Indirizzo">Indirizzo:</label>
+        <input type="text" name="Indirizzo" required>
+    </div>
+    <div>
+        <label for="Città">Città:</label>
+        <input type="text" name="Città" required>
+    </div>
+    <div>
+        <label for="Nazione">Nazione:</label>
+        <input type="text" name="Nazione" required>
+    </div>
+    <div>
+        <label for="DataNascita">Data di nascita:</label>
+        <input type="date" name="DataNascita" required>
+    </div>
+    <div>
+        <label for="NumeroCellulare">Numero di cellulare:</label>
+        <input type="text" name="Numero di cellulare" required>
+    </div>
+    <div>
+        <label for="IndirizzoEmail">Email:</label>
+        <input type="email" name="IndirizzoEmail" required>
+    </div>
+    <div>
+        <label for="Password">Password:</label>
+        <input type="password" name="PasswordCliente" required>
+    </div>
+
+    <div>
+        <button type="submit">Registrati</button>
+    </div>
+}
+
+<a href="~/Account/Login">Hai già un account? Accedi qui.</a>

@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <div>
+        <label for="IndirizzoEmail">Email:</label>
+        <input type="email" name="IndirizzoEmail" required>
+    </div>
+    <div>
+        <label for="Password">Password:</label>
+        <input type="password" name="Password" required>
+    </div>
+
+    <div>
+        <button type="submit">Login</button>
+    </div>
+}
+
+<a href="~/Account/Register">Non hai un account? Registrati qui.</a>
