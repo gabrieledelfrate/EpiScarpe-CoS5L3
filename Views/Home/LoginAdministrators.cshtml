@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Login Amministratori";
+    Layout = null;
+}
+
+<h2>Login Amministratori</h2>
+
+@using (Html.BeginForm("LoginAdministrators", "Home", FormMethod.Post))
+{
+    <div>
+        <label for="Matricola">Matricola:</label>
+        <input type="text" name="Matricola" required>
+    </div>
+    <div>
+        <label for="PasswordAdministrator">Password Amministratore:</label>
+        <input type="password" name="PasswordAdministrator" required>
+    </div>
+
+    <div>
+        <button type="submit">Login</button>
+    </div>
+}
+
+<a href="~/Home/Login">Torna al Login Utenti</a>

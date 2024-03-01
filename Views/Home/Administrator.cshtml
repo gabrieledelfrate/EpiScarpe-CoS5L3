@@ -1,0 +1,66 @@
+﻿    @{
+        ViewData["Title"] = "Administrator";
+        Layout = "_LayoutAdministrator";
+    }
+
+    <h2>Administrator</h2>
+
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@product.CoverImage" class="card-img-top" alt="@product.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal-@product.Id">
+                            Modifica
+                        </button>
+                        <a asp-action="HideFromHome" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-danger">
+                            Non visualizzare in home
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editModal-@product.Id" tabindex="-1" role="dialog" aria-labelledby="editModalLabel-@product.Id" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel-@product.Id">Modifica Prodotto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form per la modifica -->
+                            <!-- Aggiungi i campi necessari per la modifica del prodotto -->
+                            <form asp-action="EditProduct" asp-controller="Home" method="post">
+                                <input type="hidden" name="productId" value="@product.Id" />
+                                <!-- Aggiungi campi per la modifica del prodotto -->
+                                <div class="form-group">
+                                    <label for="newProductName">Nuovo Nome</label>
+                                    <input type="text" class="form-control" id="newProductName" name="newProductName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="newProductDescription">Nuova Descrizione</label>
+                                    <textarea class="form-control" id="newProductDescription" name="newProductDescription"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newProductPrice">Nuovo Prezzo</label>
+                                    <input type="number" class="form-control" id="newProductPrice" name="newProductPrice" required />
+                                </div>
+                                <!-- Aggiungi altri campi necessari per la modifica del prodotto -->
+                                <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
